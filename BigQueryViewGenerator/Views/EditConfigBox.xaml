@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="BigQueryViewGenerator.Views.EditConfigBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:v="clr-namespace:BigQueryViewGenerator.Views"
+        xmlns:vm="clr-namespace:BigQueryViewGenerator.ViewModels"
+        Background="{DynamicResource MaterialDesignPaper}"
+        BorderThickness="1"
+        FontFamily="BIZ UDGothic"
+        TextElement.FontSize="22"
+        TextElement.FontWeight="Regular"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+    >
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <TabControl wpf:ColorZoneAssist.Mode="Standard" wpf:ElevationAssist.Elevation="Dp4" Style="{StaticResource MaterialDesignNavigationRailTabControl}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Width="Auto" Height="Auto">
+                        <wpf:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="FileDocument" />
+                        <TextBlock HorizontalAlignment="Center" Text="定義"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <GroupBox Header="定義" Margin="3" Style="{StaticResource MaterialDesignCardGroupBox}">
+                    <v:EditViewConfigBox DataContext="{Binding vm:EditViewConfigBoxViewModel}"/>
+                </GroupBox>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Width="Auto" Height="Auto">
+                        <wpf:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Calculator" />
+                        <TextBlock HorizontalAlignment="Center" Text="テスト"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <GroupBox Header="テスト" Margin="3" Style="{StaticResource MaterialDesignCardGroupBox}">
+                    <v:EditTestConfigBox DataContext="{Binding vm:EditTestConfigBoxViewModel}"/>
+                </GroupBox>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

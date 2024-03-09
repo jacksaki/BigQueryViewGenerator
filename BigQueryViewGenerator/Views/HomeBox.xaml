@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="BigQueryViewGenerator.Views.HomeBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:v="clr-namespace:BigQueryViewGenerator.Views"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:vm="clr-namespace:BigQueryViewGenerator.ViewModels"
+        Background="{DynamicResource MaterialDesignPaper}"
+        BorderThickness="1"
+        FontFamily="BIZ UDGothic"
+        TextElement.FontSize="22"
+        TextElement.FontWeight="Regular"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+    >
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Margin="3" Text="{Binding Parameter.SourceTableName.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}" wpf:HintAssist.Hint="元テーブル名"/>
+                    <TextBox Grid.Column="1" Margin="3" Text="{Binding Parameter.Description.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}" wpf:HintAssist.Hint="説明"/>
+                </Grid>
+            </GroupBox>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Margin="3" Command="{Binding CopySchemaSQLCommand}" Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <wpf:PackIcon Kind="DatabaseCog"/>
+                        <TextBlock Text="列情報取得SQLコピー"/>
+                    </StackPanel>
+                </Button>
+                <Button Margin="3" Command="{Binding PasteSchemaCommand}" Grid.Column="2" Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <wpf:PackIcon Kind="CodeBlockJson"/>
+                        <TextBlock Text="列情報JSON貼り付け"/>
+                    </StackPanel>
+                </Button>
+                <Button Margin="3" Grid.Column="1" Command="{Binding CopySampleSQLCommand}" Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <wpf:PackIcon Kind="DatabaseSearch"/>
+                        <TextBlock Text="サンプル取得SQLコピー"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <GroupBox Grid.Row="2" Header="列情報" Style="{StaticResource  MaterialDesignCardGroupBox}" Margin="4">
+                <DataGrid ItemsSource="{Binding Parameter.Columns}" SelectedItem="{Binding SelectedColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="上に追加" Command="{Binding InsertPrevCommand}"/>
+                            <MenuItem Header="下に追加" Command="{Binding InsertNextCommand}"/>
+                            <MenuItem Header="削除" Command="{Binding RemoveSelectedCommand}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="列名" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Name,Mode=OneWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="型" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding DataType,Mode=OneWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Nullable" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ToggleButton IsHitTestVisible="False" Style="{StaticResource MaterialDesignActionAccentToggleButton}" Content="N" wpf:ToggleButtonAssist.OnContent="Y" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="出力対象">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ToggleButton IsChecked="{Binding IsExportTarget.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="(新)列名">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Padding="8" Margin="3" Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding NewName.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="変換ルール">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox Padding="8" Margin="3" Style="{StaticResource MaterialDesignOutlinedComboBox}" ItemsSource="{Binding DataContext.Config.Converters,RelativeSource={RelativeSource FindAncestor, AncestorType=v:HomeBox}}" DisplayMemberPath="Name" SelectedItem="{Binding Converter.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="マニュアル" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Margin="3" Padding="8" Text="{Binding ManualText.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" wpf:HintAssist.Hint="マニュアル" Visibility="{Binding IsManual.Value,Converter={StaticResource BoolToVisibility}}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </Grid>
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Grid Grid.Column="2">
+            <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="4" Header="SQL">
+                <Grid>
+                    <avalon:TextEditor Margin="3" Document="{Binding SQLDocument}" ShowLineNumbers="True" SyntaxHighlighting="TSQL" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}" FontFamily="BIZ UDGothic" FontSize="22"/>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Command="{Binding ExportCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
+                        <wpf:PackIcon Kind="FileExcel" Width="28" Height="28"/>
+                      </Button>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>
