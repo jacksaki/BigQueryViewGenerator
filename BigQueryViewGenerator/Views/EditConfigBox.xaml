@@ -20,7 +20,16 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <TabControl wpf:ColorZoneAssist.Mode="Standard" wpf:ElevationAssist.Elevation="Dp4" Style="{StaticResource MaterialDesignNavigationRailTabControl}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBar>
+            <Button Margin="4" Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
+                <wpf:PackIcon Kind="Floppy" Height="32" Width="32"/>
+            </Button>
+        </ToolBar>
+        <TabControl Grid.Row="1" wpf:ColorZoneAssist.Mode="Standard" wpf:ElevationAssist.Elevation="Dp4" Style="{StaticResource MaterialDesignNavigationRailTabControl}">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Width="Auto" Height="Auto">
@@ -29,7 +38,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <GroupBox Header="定義" Margin="3" Style="{StaticResource MaterialDesignCardGroupBox}">
-                    <v:EditViewConfigBox DataContext="{Binding vm:EditViewConfigBoxViewModel}"/>
+                    <v:EditViewConfigBox DataContext="{Binding ViewConfigViewModel}"/>
                 </GroupBox>
             </TabItem>
             <TabItem>
@@ -40,7 +49,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <GroupBox Header="テスト" Margin="3" Style="{StaticResource MaterialDesignCardGroupBox}">
-                    <v:EditTestConfigBox DataContext="{Binding vm:EditTestConfigBoxViewModel}"/>
+                    <v:EditTestConfigBox DataContext="{Binding TestConfigViewModel}"/>
                 </GroupBox>
             </TabItem>
         </TabControl>

@@ -69,7 +69,7 @@
                 </Button>
             </Grid>
             <GroupBox Grid.Row="2" Header="列情報" Style="{StaticResource  MaterialDesignCardGroupBox}" Margin="4">
-                <DataGrid ItemsSource="{Binding Parameter.Columns}" SelectedItem="{Binding SelectedColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid FontSize="18" ItemsSource="{Binding Parameter.Columns}" SelectedItem="{Binding SelectedColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="上に追加" Command="{Binding InsertPrevCommand}"/>

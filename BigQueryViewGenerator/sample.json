@@ -1,0 +1,42 @@
+[
+  {
+    "TABLE_SCHEMA": "public",
+    "TABLE_NAME": "products",
+    "COLUMN_NAME": "cd",
+    "ORDINAL_POSITION": 1,
+    "DATA_TYPE": "integer",
+    "IS_NULLABLE": "NO"
+  },
+  {
+    "TABLE_SCHEMA": "public",
+    "TABLE_NAME": "products",
+    "COLUMN_NAME": "name",
+    "ORDINAL_POSITION": 2,
+    "DATA_TYPE": "character varying",
+    "IS_NULLABLE": "NO"
+  },
+  {
+    "TABLE_SCHEMA": "public",
+    "TABLE_NAME": "products",
+    "COLUMN_NAME": "pyontan",
+    "ORDINAL_POSITION": 3,
+    "DATA_TYPE": "timestamp without time zone",
+    "IS_NULLABLE": "YES"
+  },
+  {
+    "TABLE_SCHEMA": "public",
+    "TABLE_NAME": "products",
+    "COLUMN_NAME": "piyo",
+    "ORDINAL_POSITION": 4,
+    "DATA_TYPE": "bytea",
+    "IS_NULLABLE": "YES"
+  },
+  {
+    "TABLE_SCHEMA": "public",
+    "TABLE_NAME": "products",
+    "COLUMN_NAME": "hoge",
+    "ORDINAL_POSITION": 5,
+    "DATA_TYPE": "numeric",
+    "IS_NULLABLE": "YES"
+  }
+]

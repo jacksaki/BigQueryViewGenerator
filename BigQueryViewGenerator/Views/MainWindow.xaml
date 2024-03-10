@@ -5,6 +5,7 @@
         xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:v="clr-namespace:BigQueryViewGenerator.Views"
         Style="{StaticResource MaterialDesignWindow}"
+        Title="BigQueryViewGenerator"
         xmlns:vm="clr-namespace:BigQueryViewGenerator.ViewModels"
         Background="{DynamicResource MaterialDesignPaper}"
         BorderThickness="1"

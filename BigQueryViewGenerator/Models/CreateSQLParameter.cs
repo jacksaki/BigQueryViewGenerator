@@ -42,6 +42,7 @@ namespace BigQueryViewGenerator.Models
         public BindableReactiveProperty<string> SQLText { get; }
         public BindableReactiveProperty<bool> CanCreateSchemaSQL { get; }
         public BindableReactiveProperty<bool> CanCreateSampleSQL { get; }
+        public BindableReactiveProperty<bool> CanExport { get; }
         private void RaisePropertyChanged(string propertyName = "")
         {
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -55,7 +56,7 @@ namespace BigQueryViewGenerator.Models
             this.SourceTable = new BindableReactiveProperty<Table>();
             this.DestView = new BindableReactiveProperty<Table>();
             this.SQLText = new BindableReactiveProperty<string>();
-
+            this.CanExport = this.SQLText.Select(x => !string.IsNullOrEmpty(x)).ToBindableReactiveProperty();
             this.Columns = new ObservableCollection<Column>();
             this.Columns.CollectionChanged += (sender, e) =>
             {

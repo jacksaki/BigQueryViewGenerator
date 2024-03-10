@@ -1,4 +1,5 @@
 ﻿using BigQueryViewGenerator.Models;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using R3;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace BigQueryViewGenerator.ViewModels
 {
@@ -17,7 +19,7 @@ namespace BigQueryViewGenerator.ViewModels
         public ReactiveCommand<Unit> InsertPrevCommand { get; }
         public ReactiveCommand<Unit> InsertNextCommand { get; }
         public ReactiveCommand<Unit> RemoveSelectedCommand { get; }
-        public BindableReactiveProperty<string> SQLText { get; }
+        public ReactiveCommand<Unit> ExportCommand { get; }
         public BindableReactiveProperty<Column> SelectedColumn { get; }
         public ICSharpCode.AvalonEdit.Document.TextDocument SQLDocument { get; }
         public CreateSQLParameter Parameter { get; }
@@ -55,6 +57,27 @@ namespace BigQueryViewGenerator.ViewModels
             });
             this.SQLDocument = new ICSharpCode.AvalonEdit.Document.TextDocument();
             this.Parameter.SQLText.Subscribe(_ => this.SQLDocument.Text = this.Parameter.SQLText.Value);
+
+            this.ExportCommand = this.Parameter.CanExport.ToReactiveCommand();
+            this.ExportCommand.Subscribe(async _ =>
+            {
+                using(var dlg=new CommonOpenFileDialog())
+                {
+                    dlg.IsFolderPicker = true;
+                    if(dlg.ShowDialog()== CommonFileDialogResult.Ok)
+                    {
+                        Mouse.OverrideCursor = Cursors.Wait;
+                        try
+                        {
+                            await new DocumentGenerator(this.Parameter).ExportAsync(dlg.FileName);
+                        }
+                        finally
+                        {
+                            Mouse.OverrideCursor = null;
+                        }
+                    }
+                }
+            });
         }
 
         private void Parameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -14,19 +14,105 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
     >
+    <UserControl.Resources>
+        <Style x:Key="dTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <GroupBox Grid.Column="0" Header="ヘッダ" Style="{StaticResource MaterialDesignCardGroupBox}" Margin="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="元テーブルデータセット名"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SourceTableDatasetCell.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="元テーブル名"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SourceTableNameCell.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="ビューデータセット名"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DestViewDatasetCell.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="ビュー名"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DestViewNameCell.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="説明"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DescriptionCell.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="詳細" Margin="4" Style="{StaticResource MaterialDesignCardGroupBox}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="開始行"/>
+                <TextBox Grid.Column="1" Grid.Row="0" Width="80" HorizontalContentAlignment="Right" Text="{Binding DetailStartRow.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="No列"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Width="80" Text="{Binding NoColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="No式"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding NoFormula.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="SQL列"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Width="80" Text="{Binding SQLStartColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Column="2" Grid.Row="3" Text="～"/>
+                <TextBox Grid.Column="3" Grid.Row="3" Width="80" Text="{Binding SQLEndColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="コンバーター名列"/>
+                <TextBox Grid.Column="1" Grid.Row="4" Width="80" Text="{Binding ConverterNameColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="5" Text="テスト対象列"/>
+                <TextBox Grid.Column="1" Grid.Row="5" Width="80" Text="{Binding TestTargetColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Column="0" Grid.Row="6" Text="テスト対象&#xa;式(行番号は{ROW}で入力)"/>
+                <TextBox Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Center" Text="{Binding TestTargetFormula.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="7" Text="テスト結果列"/>
+                <TextBox Grid.Column="1" Grid.Row="7" Width="80" Text="{Binding TestResultColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Column="0" Grid.Row="8" Text="テスト結果 式&#xa;式(行番号は{ROW}で入力)"/>
+                <TextBox Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3" VerticalAlignment="Center" Text="{Binding TestResultFormula.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="9" Text="元の列名列"/>
+                <TextBox Grid.Column="1" Grid.Row="9" Width="80" Text="{Binding SourceColumnNameColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+                <TextBlock Grid.Column="0" Grid.Row="10" Text="元の列型名列"/>
+                <TextBox Grid.Column="1" Grid.Row="10" Width="80" Text="{Binding SourceColumnDataTypeColumn.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource dTextBox}"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

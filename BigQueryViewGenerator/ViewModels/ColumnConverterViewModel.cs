@@ -16,6 +16,7 @@ namespace BigQueryViewGenerator.ViewModels
         public bool IsReadonly => this.Parent.IsReadonly;
         public bool IsNew { get; private set; }
         public BindableReactiveProperty<string> Name { get; }
+        public BindableReactiveProperty<bool> IsTestTarget { get; }
         public BindableReactiveProperty<string> Template { get; }
         public static ColumnConverterViewModel CreateNew(IEnumerable<ColumnConverter> converters)
         {
@@ -26,12 +27,14 @@ namespace BigQueryViewGenerator.ViewModels
         {
             this.Parent = parent;
             this.Name = new BindableReactiveProperty<string>(this.Parent.Name);
+            this.IsTestTarget = new BindableReactiveProperty<bool>(this.Parent.IsTestTarget);
             this.Template = new BindableReactiveProperty<string>(this.Parent.Template);
         }
         public void ApplyChanges()
         {
             this.Parent.Name = this.Name.Value;
             this.Parent.Template = this.Template.Value;
+            this.Parent.IsTestTarget = this.IsTestTarget.Value;
         }
     }
 }

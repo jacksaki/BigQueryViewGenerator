@@ -1,4 +1,5 @@
-﻿using RazorEngine;
+﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+using RazorEngine;
 using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,11 @@ namespace BigQueryViewGenerator.Models
         [JsonInclude]
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
+
+        [JsonInclude]
+        [JsonPropertyName("is_test_target")]
+        public bool IsTestTarget { get; set; } = true;
+
         [JsonInclude]
         [JsonPropertyName("template")]
         public string Template { get; set; } = string.Empty;
@@ -33,6 +39,7 @@ namespace BigQueryViewGenerator.Models
                 IsManual = false,
                 Name = "新規作成",
                 Order = order,
+                IsTestTarget = true,
                 Template = "@Model.Name"
             };
         }
@@ -43,6 +50,7 @@ namespace BigQueryViewGenerator.Models
                 IsManual = true,
                 Name = "マニュアル",
                 Order = order,
+                IsTestTarget=true,
                 Template = string.Empty,
             };
         }

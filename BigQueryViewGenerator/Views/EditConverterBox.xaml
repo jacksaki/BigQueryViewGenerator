@@ -16,55 +16,73 @@
         TextOptions.TextRenderingMode="Auto"
     >
     <UserControl.Resources>
+        <c:InvertBoolConverter x:Key="InvertBool"/>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <c:IsReadonyToVisibilityConverter x:Key="IsReadonlyToVisibility"/>
     </UserControl.Resources>
-    <GroupBox Header="コンバーター" Style="{StaticResource MaterialDesignCardGroupBox}" Margin="4">
-        <Grid>
-            <ListView ItemsSource="{Binding Converters}" SelectedItem="{Binding SelectedConverter.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="名前" Width="250">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBox Padding="8" Margin="3" IsReadOnly="{Binding IsReadonly,Mode=OneWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding Name.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="マニュアル">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding IsManual,Mode=OneWay}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-
-                        <GridViewColumn Header="テンプレート" Width="600">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBox Padding="8" Margin="3" Visibility="{Binding IsReadonly,Converter={StaticResource IsReadonlyToVisibility}}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding Template.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Button Margin="10" Command="{Binding RemoveSelectedCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                <wpf:PackIcon Kind="Remove" Width="28" Height="28"/>
-            </Button>
-            <Button Margin="10,10,60,10" Command="{Binding AddCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                <wpf:PackIcon Kind="Add" Width="28" Height="28"/>
-            </Button>
-            <Button Margin="10,10,120,10" Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBar>
+            <Button Margin="4" Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
                 <wpf:PackIcon Kind="Floppy" Width="28" Height="28"/>
             </Button>
-        </Grid>
-    </GroupBox>
+        </ToolBar>
+        <GroupBox Grid.Row="1" Header="コンバーター" Style="{StaticResource MaterialDesignCardGroupBox}" Margin="4">
+            <Grid>
+                <ListView FontSize="18" ItemsSource="{Binding Converters}" SelectedItem="{Binding SelectedConverter.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="名前" Width="250">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Padding="8" Margin="3" IsReadOnly="{Binding IsReadonly,Mode=OneWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding Name.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="テスト対象">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="{Binding IsManual,Converter={StaticResource InvertBool}}" IsChecked="{Binding IsTestTarget.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="マニュアル">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding IsManual,Mode=OneWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="テンプレート" Width="600">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Padding="8" Margin="3" Visibility="{Binding IsReadonly,Converter={StaticResource IsReadonlyToVisibility}}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding Template.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Margin="4,4,4,4" Command="{Binding RemoveSelectedCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <wpf:PackIcon Kind="Remove" Width="28" Height="28"/>
+                </Button>
+                <Button Margin="4,4,60,4" Command="{Binding AddCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <wpf:PackIcon Kind="Add" Width="28" Height="28"/>
+                </Button>
+            </Grid>
+        </GroupBox>
+    </Grid>
 </UserControl>
